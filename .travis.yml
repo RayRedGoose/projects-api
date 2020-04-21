@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- node
+services:
+- postgresql
+before_script:
+- psql -c 'CREATE DATABASE projects_app_test;' -U postgres
+- knex migrate:latest --env=test
+- knex seed:run --env=test
+notifications:
+  email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure:
+  app: projects_api
+  skip_cleanup: true
